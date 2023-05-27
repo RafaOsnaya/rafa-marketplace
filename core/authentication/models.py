@@ -8,7 +8,7 @@ class CustomUser(AbstractUser):
     class Meta:
         ordering = ['pk']
 
-    username = models.CharField(max_length=50, unique=True, null=False)
+    username = models.CharField(max_length=50, blank=True, null=True)
     email = models.EmailField(max_length = 120, null = False, unique=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True, unique=True)
 

@@ -8,7 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import LoginSerializer, UserSerializer, SingUpSerializer
+from .serializers import LoginSerializer, UserSerializer
+# SingUpSerializer
 
 
 # Create your views here.
@@ -44,11 +45,20 @@ class LoginView(APIView):
 
 
 class SingUpView(APIView):
-    serializer_class = SingUpSerializer
+    serializer_class = UserSerializer
 
     def post(self, request):
         print(request.data)
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(
+                {
+                    "error": "400 bad request",
+                    "message": "Email already register"
+                },
+                 status=status.HTTP_400_BAD_REQUEST)
+        
